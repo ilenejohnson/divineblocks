@@ -1,0 +1,74 @@
+.wp-block-create-block-divineblocks {
+  border: 1px dotted #f00;
+}
+/*
+#divineblocks-controls {
+  padding: 15px;
+}
+*/
+.blocks-base-control {
+  &__label {
+    margin-bottom: 10px;
+  }
+}
+.active-tab {
+  background: gray;
+  color: white;
+}
+.active-tab:hover {
+  background: gray;
+  color: yellow;
+}
+.components-tab-panel {
+  &__tabs-item {
+    padding: 3px 32px 3px 16px;
+  }
+}
+.inspectorTitles {
+  font-weight: bold;
+  padding-bottom: calc(8px);
+ }
+  .icons-desktop:before{
+		content: "\f472";
+	}
+
+	.icons-tablet:before{
+		content: "\f471";
+	}
+	.icons-mobile:before{
+		content: "\f470";
+	}
+ .icons-general:before {
+
+  font-family: "dashicons";
+
+
+
+  display: inline-block;
+
+  -webkit-font-smoothing: antialiased;
+
+  font-size:15px;
+
+  vertical-align: top;
+
+  margin-right: 5px;
+
+  margin-right: 0.5rem;
+
+  }
+	#start-resizable-editor-section {
+    display: none;
+}
+.device-wrapper .device-wrapper--Desktop{
+
+}
+.device-wrapper .device-wrapper--Tablet{
+
+}
+
+/* add all responsive styles here */
+
+#end-resizable-editor-section {
+    display: none;
+}
