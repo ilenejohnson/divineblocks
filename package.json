@@ -1,8 +1,8 @@
 {
   "name": "divineblocks",
   "version": "0.1.0",
-  "description": "Example block written with ESNext standard and JSX support – build step required.",
-  "author": "The WordPress Contributors",
+  "description": "Gutenberg text block that enables settings for desktop, mobile, and phone on the screen.",
+  "author": "Ilene Johnson",
   "license": "GPL-2.0-or-later",
   "main": "build/index.js",
   "scripts": {

@@ -76,17 +76,16 @@ registerBlockType("create-block/divinetextblock", {
       type: "array",
       default: ["left", "left", "left"],
     },
-	  OpacityStatus:{
-			type: "array",
-			default:[1,1,1]
-
-		},
+    OpacityStatus: {
+      type: "array",
+      default: [1, 1, 1],
+    },
     borderRadius: { type: "array", default: [3, 3, 3] },
     borderStyle: { type: "array", default: ["none", "none", "none"] },
     border_color: { type: "array", default: ["#000000", "#000000", "#000000"] },
   },
   title: "Divine Text Block",
-  category: "widgets",
+  category: "divine-categories",
   icon: "universal-access-alt",
   /**
    * @see ./edit.js

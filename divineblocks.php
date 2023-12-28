@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name:       Divineblocks
- * Description:       Example block written with ESNext standard and JSX support – build step required.
+ * Description:       Gutenberg text block that enables settings for desktop, mobile, and phone on the screen..
  * Requires at least: 5.8
  * Requires PHP:      7.0
  * Version:           0.1.0
- * Author:            The WordPress Contributors
+ * Author:			  Ilene Johnson
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       divineblocks
@@ -60,6 +60,12 @@ class Divine_Block_Class
     {
 
         register_block_type(__DIR__);
+
+        add_filter('block_categories_all', array($this, 'create_block_category'));
+
+
+
+
     }
 
 
@@ -72,7 +78,16 @@ class Divine_Block_Class
 
 
     }
+    public function create_block_category()
+    {
+        // Adding a new category.
+        $categories[] = array(
+            'slug'  => 'divine-categories',
+            'title' => 'Divine Category'
+        );
 
+        return $categories;
+    }
     public function make_the_css()
     {
         $this->divine_block_parse_block();

@@ -5,7 +5,7 @@
 	"version": "0.1.0",
 
 
-	"description": "Example block written with ESNext standard and JSX support – build step required.",
+	"description": "Gutenberg text block that enables settings for desktop, mobile, and phone on the screen.",
 	"supports": {
 		"html": false
 	},
