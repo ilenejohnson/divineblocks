@@ -20,3 +20,7 @@ Insert the block via Blocks listing under "Divine Category"
 Place your cursor on the block and view the selections on the right side menu
 
 ![Right Side Menu](assets/screenshot-1.png)
+
+Click the down arrow on a selection on the right side menu to set the attributes for the desktop, tablet or mobile
+
+![Right Side Menu1](assets/screenshot-3.png)
