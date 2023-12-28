@@ -13,8 +13,10 @@
     "start": "wp-scripts start",
     "packages-update": "wp-scripts packages-update"
   },
-  
   "devDependencies": {
     "@wordpress/scripts": "^26.15.0"
+  },
+  "dependencies": {
+    "@wordpress/icons": "^9.36.0"
   }
 }

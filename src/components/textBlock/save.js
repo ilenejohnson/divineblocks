@@ -28,6 +28,7 @@ export default function save({ attributes }) {
   const cssClassName = "divine_blocks_class1_" + attributes.unique_id;
 
   return (
+
     <RichText.Content
       {...blockProps}
       className={cssClassName}

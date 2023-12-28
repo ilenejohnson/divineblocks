@@ -43,7 +43,7 @@ const options = [
     label: "Double",
   },
   {
-    value: "grooved",
+    value: "groove",
     label: "Grooved",
   },
   {

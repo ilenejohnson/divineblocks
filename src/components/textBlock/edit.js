@@ -19,8 +19,8 @@ import {
   InspectorControls,
   PanelColorSettings,
 } from "@wordpress/block-editor";
-import { PanelBody } from "@wordpress/components";
-import { useEffect } from "@wordpress/element";
+import { PanelBody, SelectControl } from "@wordpress/components";
+import { useEffect, Fragment } from "@wordpress/element";
 
 import { useSetting, ContrastChecker } from "@wordpress/block-editor";
 import { ShowFontTab } from "../../utils/fonttab";
@@ -38,6 +38,7 @@ import {
   DivineColorPaletteTab,
   DivineRadioTab,
   setLocalEditScreen,
+  deepCopy,
 } from "../../utils/utils";
 import { useSelect } from "@wordpress/data";
 
@@ -61,7 +62,6 @@ export default function Edit({ attributes, setAttributes, clientId }, props) {
   useEffect(() => {
     //This conditional is useful to only set the id attribute once
     //when the component mounts for the first time
-    console.log("props is ");
 
     attributes.unique_id === "" &&
       setAttributes({ unique_id: clientId.substr(2, 9) });
@@ -88,63 +88,47 @@ export default function Edit({ attributes, setAttributes, clientId }, props) {
     );
     setLocalEditScreen(screenType, "border-width", args);
   };
-
+  const changeTag = (newValue) => {
+    setAttributes({ tag: newValue });
+  };
   const onChangeTextColor = (hexColor) => {
     setAttributes({ text_color: hexColor });
   };
 
   function ChangeTheSpacing(the_spacing, the_type, args) {
-    let [newSize, row, side, theclass] = args;
-
-    let string = "padding-" + fourArray[side];
-
-    let data = theclass.split(" ");
-    let newItems = "";
-    jQuery(data).each(function () {
-      newItems += "." + this + " ";
-    });
-
-    jQuery(newItems).css(string, newSize + "px");
-    the_spacing[row][side] = newSize;
-
-    setAttributes({ [the_type]: the_spacing });
+    let [newSize, type, side] = args;
+    let copy = deepCopy(the_spacing);
+    copy[type][side] = newSize;
+    setAttributes({ [the_type]: copy });
   }
 
   const changePadding = (...args) => {
-    //  let [newSize, row, side, theclass] = args;
-    ChangeTheSpacing(
-      attributes.padding.slice(),
-
-      "padding",
-      args,
-    );
+    ChangeTheSpacing(attributes.padding, "padding", args);
   };
 
   const changeMargins = (...args) => {
-    ChangeTheSpacing(
-      attributes.margins.slice(),
-
-      "margins",
-      args,
-    );
+    ChangeTheSpacing(attributes.margins, "margins", args);
   };
 
   function SetVisibility(newSize, x) {
-    let c = "." + x;
-    c = ".divine_blocks_class1_" + attributes.unique_id;
-    if (newSize.localeCompare("none") === 0) jQuery(c).fadeTo("fast", 0.2);
-    else jQuery(c).fadeTo("fast", 10);
+    if (newSize.localeCompare("none") === 0) jQuery(x).fadeTo("fast", 0.2);
+    else jQuery(x).fadeTo("fast", 10);
   }
   const ChangeVisibility = (...args) => {
     let screenType = SetAllTheAttributes(args, attributes.display, "display");
 
+    let [newValue, type] = args;
+    let op = 1;
+    if (newValue.localeCompare("none") === 0) op = 0.2;
+    let newArg = [op, type];
+    SetAllTheAttributes(newArg, attributes.OpacityStatus, "OpacityStatus");
+    //let c = ".divine_blocks_class1_" + attributes.unique_id;
+
+    // jQuery(c).css("display", args[0]);
+
     console.log("args 0 is " + args[0]);
-    let c = ".divine_blocks_class1_" + attributes.unique_id;
-    /*if (newSize.localeCompare("none") === 0) jQuery(c).fadeTo("fast", 0.2);
-    else jQuery(c).fadeTo("fast", 10);*/
-    jQuery(c).css("display", args[0]);
   };
-  function LetterSpaceingHeightChange(
+  function LetterSpacingHeightChange(
     the_attributes,
     the_type,
     the_css_type,
@@ -152,12 +136,12 @@ export default function Edit({ attributes, setAttributes, clientId }, props) {
   ) {
     SetAllTheAttributes(args, the_attributes, the_type);
     let [newValue] = args;
-    //"divine_blocks_class1_" + attributes.unique_id;
+
     let tempClass = ".divine_blocks_class1_" + attributes.unique_id + " p";
     jQuery(tempClass).css(the_css_type, newValue + "px");
   }
   const changeletterSpacing = (...args) => {
-    LetterSpaceingHeightChange(
+    LetterSpacingHeightChange(
       attributes.letterSpacing,
       "letterSpacing",
       "letter-spacing",
@@ -165,7 +149,7 @@ export default function Edit({ attributes, setAttributes, clientId }, props) {
     );
   };
   const changelineHeight = (...args) => {
-    LetterSpaceingHeightChange(
+    LetterSpacingHeightChange(
       attributes.lineHeight,
       "lineHeight",
       "line-height",
@@ -180,6 +164,7 @@ export default function Edit({ attributes, setAttributes, clientId }, props) {
     );
     setLocalEditScreen(screenType, "border-radius", args);
   };
+  // SetAllTheAttributes;
 
   const changeTheFontSize = (...args) => {
     let screenType = SetAllTheAttributes(
@@ -190,7 +175,6 @@ export default function Edit({ attributes, setAttributes, clientId }, props) {
   };
   function SetAllTheAttributes(theArgs, theAttributeValue, theAttribute) {
     let [newValue, type] = theArgs;
-    //  const newValue = theArgs[0];
 
     const nv = theAttributeValue.map((value, index) => {
       if (index == screen[type]) {
@@ -208,8 +192,7 @@ export default function Edit({ attributes, setAttributes, clientId }, props) {
       attributes.border_color,
       "border_color",
     );
-    console.log("border color change " + screenType);
-    console.dir(args);
+
     setLocalEditScreen(screenType, "border-color", args);
   };
   const changeTextTransform = (...args) => {
@@ -228,6 +211,7 @@ export default function Edit({ attributes, setAttributes, clientId }, props) {
     );
     setLocalEditScreen(screenType, "text-align", args);
   };
+
   const changeBorderStyle = (...args) => {
     let screenType = SetAllTheAttributes(
       args,
@@ -245,25 +229,13 @@ export default function Edit({ attributes, setAttributes, clientId }, props) {
       deviceType: __experimentalGetPreviewDeviceType(),
     };
   }, []);
-  const cssClassName =
-    /* "device-wrapper device-wrapper--" +
-    deviceType +*/
-    "divine_blocks_class1_" + attributes.unique_id;
-  console.log("attributes ");
-  console.dir(attributes);
-  SetVisibility(attributes.display[0], cssClassName);
+  const cssClassName = "divine_blocks_class1_" + attributes.unique_id;
+  /*
+  SetVisibility(attributes.display[0], cssClassName);*/
   const blockProps = useBlockProps({
-    //className: `device-wrapper device-wrapper--${deviceType}`,
     className: `${cssClassName}`,
   });
 
-  const ff =
-    ".device-wrapper--" +
-    deviceType +
-    " .divine_blocks_class1_" +
-    attributes.unique_id;
-
-  let demoClasses = document.querySelectorAll(ff);
   let dType;
 
   switch (deviceType) {
@@ -281,26 +253,15 @@ export default function Edit({ attributes, setAttributes, clientId }, props) {
       break;
   }
 
-  demoClasses.forEach((box) => {
-    box.style.fontSize = "87px";
-  });
-
   return (
     <div {...blockProps}>
-      <BlockControls>
-        <AlignmentToolbar
-          value={attributes.alignment}
-          onChange={onChangeAlignment}
-        />
-      </BlockControls>
-
       <InspectorControls key="inspector">
         <PanelBody title="Visibility" initialOpen={false}>
           <DivineRadioTab
             label="Visibility"
             selected={attributes.display}
             options={[
-              { label: "Show", value: "inline-block" },
+              { label: "Show", value: "block" },
               { label: "Hide", value: "none" },
             ]}
             func={ChangeVisibility}
@@ -448,14 +409,15 @@ export default function Edit({ attributes, setAttributes, clientId }, props) {
           letterSpacing: attributes.letterSpacing[dType],
           lineHeight: attributes.lineHeight[dType],
           textTransform: attributes.textTransform[dType],
-          display: attributes.display[dType],
+
+          opacity: attributes.OpacityStatus[dType],
           textAlign: attributes.textAlign[dType],
           fontSize: attributes.the_font_sizes[dType],
           keepPlaceholderOnFocus: true,
         }}
         className={cssClassName}
         tagName="div"
-        multiline="p"
+        multiline={false}
         onChange={onChangeContent}
         value={attributes.content}
         placeholder={__("Enter Text...")}

@@ -9,10 +9,10 @@ import {
 import "./header";
 const setLocalEditScreen = (screenType, element, args) => {
   let [newElement, placeholder, theClass] = args;
+  console.log("the class is " + theClass);
 
-  let data = "divine_blocks_class1_" + attributes.unique_id;
   let newItems = "";
-  jQuery(data).each(function () {
+  jQuery(theClass).each(function () {
     newItems += "." + this + " ";
   });
 
@@ -120,8 +120,7 @@ const DivineColorPaletteTab = (props) => {
       >
         {(tab) => {
           let tabout;
-          console.log("props is ");
-          console.dir(props);
+
           if ("desktop" === tab.name) {
             tabout = (
               <Fragment>
@@ -331,10 +330,21 @@ const intialTab = () => {
 };
 const onChangeTab = (tab) => {
   let x = tab.charAt(0).toUpperCase() + tab.slice(1);
-  console.log("x is " + x);
+
   wp.data.dispatch("core/edit-post").__experimentalSetPreviewDeviceType(x);
 };
-
+function deepCopy(arr) {
+  let copy = [];
+  arr.forEach((elem) => {
+    if (Array.isArray(elem)) {
+      copy.push(deepCopy(elem));
+    } else {
+      copy.push(elem);
+    }
+  });
+  return copy;
+}
+export { deepCopy };
 export { DivineRangeTab };
 export { DivineColorPaletteTab };
 export { DivineSelectTab };

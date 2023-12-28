@@ -29,13 +29,14 @@ import save from "./save";
 registerBlockType("create-block/divinetextblock", {
   attributes: {
     content: {
-      type: "array",
-      source: "children",
+      type: "string",
+      source: "html",
       selector: "div",
     },
-    alignment: {
+
+    tag: {
       type: "string",
-      default: "none",
+      default: "div",
     },
     dtype: {
       type: "number",
@@ -63,7 +64,7 @@ registerBlockType("create-block/divinetextblock", {
     text_color: { type: "string", default: "#000000" },
     display: {
       type: "array",
-      default: ["inline-block", "inline-block", "inline-block"],
+      default: ["block", "block", "block"],
     },
 
     unique_id: { type: "string", default: "" },
@@ -73,8 +74,13 @@ registerBlockType("create-block/divinetextblock", {
     textTransform: { type: "array", default: ["none", "none", "none"] },
     textAlign: {
       type: "array",
-      default: ["left", "center", "right", "justify"],
+      default: ["left", "left", "left"],
     },
+	  OpacityStatus:{
+			type: "array",
+			default:[1,1,1]
+
+		},
     borderRadius: { type: "array", default: [3, 3, 3] },
     borderStyle: { type: "array", default: ["none", "none", "none"] },
     border_color: { type: "array", default: ["#000000", "#000000", "#000000"] },
